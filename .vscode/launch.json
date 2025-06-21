@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run randgen.exe",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/randgen.exe",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "C:/Strawberry/c/bin/gdb.exe",  // ←← 修改為你的 gdb.exe 路徑
+      "preLaunchTask": "CMake Build"
+    }
+  ]
+}
