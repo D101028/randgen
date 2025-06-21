@@ -9,7 +9,7 @@
 
 std::string help = R"(Usage: randgen [options...]
 Generate a random password/UUID. If no arguments were passed, use the default arguments: 
--ans -l 15 --strict
+-ans -l 15
 If at least one of -a, -n, -s was given, then it will only generate from the given types; otherwise, -a, -n, -s will all be seen as given. 
 
 Options:
@@ -20,7 +20,6 @@ Options:
   --captalized          Only accept captalized letters (A-Z)
   --lowercase           Only accept lowercase letters (a-z)
   -l, --length <length> Output length of the password (default: 15)
-  --strict              Ensure the password containing all kinds of characters
   -u, --uuid            Generate a UUID (v4))";
 
 struct Config {
@@ -78,8 +77,7 @@ std::string generatePassword(
     bool acceptSymbol, 
     bool captalize, 
     bool lowercase, 
-    unsigned int length, 
-    bool isStrict
+    unsigned int length
 ) {
     if (toShowHelp) {
         return help;
@@ -118,7 +116,6 @@ int main(int argc, char* argv[]) {
     bool captalize = false;
     bool lowercase = false;
     unsigned int length = 15;
-    bool isStrict = false;
 
     // keys
     for (const auto& key : conf.keys) {
@@ -134,8 +131,6 @@ int main(int argc, char* argv[]) {
             captalize = true;
         } else if (key == "lowercase") {
             lowercase = true;
-        } else if (key == "strict") {
-            isStrict = true;
         } else if (key == "u" | key == "uuid") {
             std::cout << generateUUIDv4() << std::endl;
             return 0;
@@ -167,8 +162,7 @@ int main(int argc, char* argv[]) {
         acceptSymbol, 
         captalize, 
         lowercase, 
-        length, 
-        isStrict);
+        length);
 
     std::cout << result << std::endl;
 
