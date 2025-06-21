@@ -2,7 +2,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <utility>
+#include <set>
 
 #include "rand.h"
 #include "uuid.h"
@@ -39,39 +39,27 @@ bool isInVector(T item, std::vector<T> v) {
     return false;
 }
 
-Config extractArgs(std::vector<std::string> args, std::vector<std::string> mapKeys) {
+Config extractArgs(const std::vector<std::string>& args, const std::vector<std::string>& mapKeys) {
     Config conf;
-    conf.keys = std::vector<std::string>();
-    conf.values = std::vector<std::string>();
-    conf.map = std::map<std::string, std::string>();
-    for (auto key : mapKeys) {
-        conf.map.insert({key, ""});
+    std::set<std::string> mapKeySet(mapKeys.begin(), mapKeys.end());
+    for (const auto& key : mapKeys) {
+        conf.map[key] = "";
     }
-    for (int i = 0; i < args.size(); i++) {
-        auto item = args[i];
-        if (item.substr(0,2) == "--") {
-            auto key = item.substr(2);
-            if (isInVector(key, mapKeys)) {
-                if (i + 1 < args.size()) {
-                    if (args[i+1][0] != '-') {
-                        conf.map[key] = args[i+1];
-                        i++;
-                    }
-                }
+
+    for (size_t i = 0; i < args.size(); ++i) {
+        const std::string& item = args[i];
+        if (item.rfind("--", 0) == 0) {
+            std::string key = item.substr(2);
+            if (mapKeySet.count(key) && (i + 1 < args.size()) && args[i + 1][0] != '-') {
+                conf.map[key] = args[++i];
             } else {
                 conf.keys.push_back(key);
             }
-        } else if (item[0] == '-' && item[1] != '-') {
-            auto keys = item.substr(1);
-            for (int j = 0; j < keys.length(); j++) {
-                auto key = keys.substr(j, 1);
-                if (isInVector(key, mapKeys)) {
-                    if (i + 1 < args.size()) {
-                        if (args[i+1][0] != '-') {
-                            conf.map[key] = args[i+1];
-                            i++;
-                        }
-                    }
+        } else if (item[0] == '-' && item.length() > 1 && item[1] != '-') {
+            for (size_t j = 1; j < item.length(); ++j) {
+                std::string key(1, item[j]);
+                if (mapKeySet.count(key) && i + 1 < args.size() && args[i + 1][0] != '-') {
+                    conf.map[key] = args[++i];
                 } else {
                     conf.keys.push_back(key);
                 }
