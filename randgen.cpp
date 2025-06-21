@@ -13,15 +13,15 @@ Generate a random password/UUID. If no arguments were passed, use the default ar
 If at least one of -a, -n, -s was given, then it will only generate from the given types; otherwise, -a, -n, -s will all be seen as given. 
 
 Options:
-  -h, --help                    Show this message
-  -a, --alphabet                Accept English letters (A-Z, a-z)
-  -n, --number                  Accept numbers 0~9
-  -s, --symbol                  Accept symbols except space
-  --captalized                  Only accept captalized letters (A-Z)
-  --lowercase                   Only accept lowercase letters (a-z)
-  -l, --length <length>         Output length of the password (default: 15)
-  --strict                      Ensure the password containing all kinds of characters
-  -u, --uuid                    Generate a UUID (v4))";
+  -h, --help            Show this message
+  -a, --alphabet        Accept English letters (A-Z, a-z)
+  -n, --number          Accept numbers 0~9
+  -s, --symbol          Accept symbols except space
+  --captalized          Only accept captalized letters (A-Z)
+  --lowercase           Only accept lowercase letters (a-z)
+  -l, --length <length> Output length of the password (default: 15)
+  --strict              Ensure the password containing all kinds of characters
+  -u, --uuid            Generate a UUID (v4))";
 
 struct Config {
     std::vector<std::string> keys;
